@@ -1,0 +1,80 @@
+Question #3: Compressing Strings
+Write an algorithm that takes a string with repeated characters and compresses them, using a number to show how many times the repeated character has been compressed. For instance, aaa would be written as 3a. Solve the problem with and without recursion.
+
+Example
+Input: "aaabccdddda"
+
+Output: "3ab2c4da"
+
+//What I know:
+-- I want to count the instances of each item, in order
+-- I want to still return a string after counting
+-- I know that I just want consecutive letters, not all instances of letters
+-- I could make subarrays of consecutive letter chunks, like [[a, a, a], [b], [c,c], [d,d,d], [a]]
+-- perhaps to make this I could make the string into an array and check the next letter at the next index
+
+//edge cases:
+-- will the input string of numbers or spaces?
+-- what should the output be if there are numbers or spaces?
+-- would anything other than a string ever be passed in (javascript)?
+
+Javascript:
+
+1. Array from the string
+2. initialize an empty array and a currentArray
+2. Loop through the string, passing element and index
+3. Check to see if element is equal to array.indexOf(index - 1), if so push to currentArray
+4. Else, push the currentArray to the subarray and reset currentArray to element
+5. Loop through final subarrays and concatinate output string using the array length and item[0] in each subarray
+
+function compressor(string) {
+  const array = string.split("");
+  let allArrays = [];
+  let currentArray = [];
+  array.forEach((element, index) => {
+    if (index == 0 || element === array[index - 1]) {
+      currentArray.push(element)
+    } else {
+      allArrays.push(currentArray);
+      currentArray = [element];
+    }
+  });
+  allArrays.push(currentArray);
+  console.log(allArrays)
+  let output = "";
+  allArrays.forEach(item => {
+    if (item.length > 1) {
+      output += `${item.length}${item[0]}`
+    } else {
+      output += `${item[0]}`
+    }
+  });
+  return output;
+}
+
+Javascript, recursion:
+
+1. I will use the reduce method
+2. In this reduce method I will use the ternary operator. It will check to see if the result.length === 0 (nothing in the result array) or if the element does not exist in the previous array. If either is true, the element is pushed as an array to the result. If not, the element is added to an existing array at result[result.length -1]
+3. I will assign the reduce method to a variable and call the reduce method again on this new array of subarrays
+4. This reduce method will concatinate based on my previous algorithm
+5. I will simply return this reduce method for my output
+
+const compressor = (string) => {
+  let array = string.split("")
+  let allArrays = array.reduce((result, element) => {
+    result.length === 0 || element !== result[result.length - 1][0]
+      ? result.push([element])
+      : result[result.length - 1].push(element);
+    return result;
+  }, []);
+  console.log(allArrays)
+  return allArrays.reduce((output, item) => {
+    if (item.length > 1) {
+      output += `${item.length}${item[0]}`
+    } else {
+      output += `${item[0]}`
+    }
+    return output
+  }, "");
+}

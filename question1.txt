@@ -1,0 +1,66 @@
+Question #1: Turning Strings to URLs
+URLs cannot have spaces. Instead, all spaces in a string are replaced with %20. Write an algorithm that replaces all spaces in a string with %20.
+
+You may not use the replace() method or regular expressions to solve this problem. Solve the problem with and without recursion.
+
+Example
+Input: "Jasmine Ann Jones"
+
+Output: "Jasmine%20Ann%20Jones"
+
+// What I know:
+-- Find white-space (I could use regex if doing in js, or a foreach loop, or I could try out functional programming and use recursion, if I was using C# I could use IsWhiteSpace method)
+-- At whitespace, replace with '%20' (This could be done with .replace() in js, or if I was looping I could reset the string[i] = '%20')
+-- return the updated string
+-- strings are immutable in javascript, so I'll need to either create a new string to return or directly return a string method
+
+// Edge cases?
+-- anything that isn't a url gets passed through? (error handling?)
+-- empty strings? (error handling)
+-- extra whitespace at the beginning and end? (use trim)
+
+Javascript:
+
+function urler(string) {
+  const regex = /\s/g
+  return string.replaceAll(regex, '%20')
+}
+
+1. define our regular expression, which is just the whitespace in the string \s and append with global (g) to find all instances of whitespace
+2. use .replaceAll method to replace all instances of white space with %20, return in same line as the replaceAll method directly returns the new string and does not mutate string
+
+Javascript, recursion:
+
+const urler = (string) => {
+  if (string === "") {  
+    return "";
+  } else {
+    if (string.charAt(string.length - 1) == " ") { 
+      return urler(string.slice(0, string.length - 1)) + "%20" 
+    }
+    return urler(string.slice(0, string.length - 1)) + string[string.length - 1] 
+  }
+}
+
+1. check the last char in the string
+2. if it is a space replace with %20, strings a immutable in js so return urler(string) + %20
+3. return everything up until the last char + the last char at recursion
+
+C#:
+
+public string Urler(string str)
+{
+  StringBuilder sb = new StringBuilder();  //use a stringbuilder which allows me to loop through type Char and append strings instead of chars
+  foreach (char c in str)
+  {
+    if (Char.IsWhiteSpace(c))  //use IsWhiteSpace method which is a Char method, checking to see if char c in string is whitepace. if it is, append to stringbuilder the %20
+    {
+      sb.Append("%20");
+    }
+    else
+    {
+      sb.Append(c)  //anything else simply is appended to the stringbuilder
+    }
+  }
+  return sb;  //return the stringbuilder
+}

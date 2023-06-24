@@ -1,0 +1,54 @@
+Question #4: Checking for Uniqueness
+Write an algorithm that determines whether all the elements in a string are unique. You may not convert the string into an array or use array methods to solve this problem. The algorithm should return a boolean.
+
+Example
+Input: "hello"
+
+Output: false
+
+Input: "copyright"
+
+Output: true
+
+//What I know:
+-- String.prototype.includes() returns a boolean
+-- I could loop through the string, as a string has indices and check to see if the letter exists by using includes
+-- I will want some sort of true or false flag to be returned after checking the string
+-- In my loop, I can break out when I reach a false, so the flag will be set to true and flip to false in this situation
+-- At each index of the string, I want to search through the rest of the string and compare each other letter to string[i]
+-- to do this I need another loop. Inside this loop I will begin at the next index
+-- 
+
+//Edge cases:
+-- will there be a string with whitespace?
+-- will there be a string with words?
+
+const unique = (string) => {
+  for (let i = 0; i < string.length; i++) {
+    let letter = string[i]
+    console.log(letter)
+    console.log("i is " + i)
+    for (let j = i + 1; j < string.length; j++) {
+      console.log("j is " + j)
+      if (letter === string[j]) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
+- I'm adding console.logs to help visualize a loop within a loop
+
+
+Javascript, recursion:
+
+const unique = (string) => {
+  if (string.length <= 1) {
+    return true;
+  }
+  const firstLetter = string[0]
+  const restOfString = string.slice(1);
+
+  return (restOfString.includes(firstLetter)) ? false : unique(restOfString);
+}

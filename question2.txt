@@ -1,0 +1,78 @@
+Question #2: Array Deduping
+Write an algorithm that removes duplicates from an array. Do not use a function like filter() to solve this. Once you have solved the problem, demonstrate how it can be solved with filter(). Solve the problem with and without recursion.
+
+Example
+Input: [7, 9, "hi", 12, "hi", 7, 53]
+
+Output: [7, 9, "hi", 12, 53]
+
+//what I know
+  -- a way to count each instance of each item in the array, looping and storing instances in an object?
+  -- remove any instance of a repeat, or if I'm putting them in an object I can simply return an array of the keys in that Objects (Object.keys)
+
+//edge cases
+  -- an array inside the array?
+  -- an empty array...?
+  -- should it be in the same order?
+
+Javascript:
+function deduper(array) {
+  deduped = {};
+  array.forEach(element => {
+    deduped[element] = (deduped[element] || 0) + 1
+  });
+  return Object.keys(deduped);
+}
+
+function deduper(array) {
+  depuded =[]
+  for (let i = 0; i < array.length; i++) {
+    if (!deduped.includes(array[i])) {
+      depuded.push(array[i])
+    }
+  }
+  return depuded;
+}
+
+1. Initialize an empty object
+2. Loop through array
+3. At each element, check to see if it exists in the object.
+4. If it doesn't, initialize as a key and set to 1, else add one to the key value
+5. ulimately just return the keys of the object...
+6. I do feel like there's a better way since I don't need all that information in an object...
+7. this method also seems to return sorted items...
+
+Javascript, with filter:
+
+1. filter array, passing in item and index
+2. to filter only the first instance of an item, I want to find where the index of the item === index of filter
+
+function deduper(array) {
+  return array.filter((element, index) => array.indexOf(element) === index)
+}
+
+Javascript, recursion:
+
+1. Use the reduce method
+2. Method takes the element, current value, and an initial value like so: array.reduce(currentValue, element => {do something}, initial value)
+3. So my method is going to reduce the array, initialize an empty object, then look at each element and either add it to the object or increment the element in the object
+
+const depuder = (array) => {
+  return array.reduce((deduped, element) => {
+    if (!deduped.includes(element)) {
+      deduped.push(element);
+    }
+    return deduped;
+  }, [])
+}
+
+const depuder = (array) => {
+  
+}
+
+const deduper = (array) => {
+  return Object.keys(array.reduce((deduped, element) => {
+    deduped[element] = (deduped[element] || 0) + 1;
+    return deduped;
+  }, {}));
+}

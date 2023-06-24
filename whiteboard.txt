@@ -1,0 +1,47 @@
+Array Deduping
+Removes duplicates from an array
+no filter
+solve with and without recursion
+input: array
+output: array
+-----------
+examples
+
+input: [7, 9, 'hi', 12, 'hi', 7, 53]
+output: [7, 9, 'hi', 12, 53]
+
+1. .includes() returns a boolean, thats for the if statement
+2. empty array for the output
+3. loop through and check each element to see if there is an additional element in the input, and if not, push to the output array.
+
+function deduper(array) {
+  let output = [];
+  for (let i = 0; i < array.length; i++) {
+    if (!output.includes(array[i])) {
+      output.push(array[i]);
+    }
+  }
+  return output;
+}
+
+1. reduce method, it can take three parameters accumulator, element, initial value
+2. push into an empty array any element that does not yet exist in that array
+
+const deduper = (array) => {
+  return array.reduce((output, element) => {
+    if (!output.includes(element)) {
+      ouput.push(element);
+    }
+    return ouput;
+  }, []);
+}
+
+1. filter method element, index, condition to be met, output a new array
+2. filter method on the array, check the indexOf(element) in the array 
+
+function deduperFilter(array) {
+  return array.filter((element, index) => 
+    array.indexOf(element) === index
+  });
+}
+
